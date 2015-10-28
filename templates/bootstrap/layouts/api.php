@@ -37,6 +37,7 @@ $this->beginContent('@yii/apidoc/templates/bootstrap/layouts/main.php', isset($t
                 'active' => isset($type) && ($class->name == $type->name),
             ];
         } ?>
+        <?php ksort($nav); ?>
         <?= SideNavWidget::widget([
             'id' => 'navigation',
             'items' => $nav,
