@@ -178,8 +178,6 @@ class TypeDoc extends BaseDoc
     {
         parent::__construct($reflector, $context, $config);
 
-        $this->namespace = trim(StringHelper::dirname($this->name), '\\');
-
         if ($reflector === null) {
             return;
         }
@@ -189,7 +187,15 @@ class TypeDoc extends BaseDoc
                 $this->authors[$tag->getAuthorName()] = $tag->getAuthorEmail();
                 unset($this->tags[$i]);
             }
+            else if ($tag->getName() == 'package'){
+	            $this->namespace = $tag->getContent();
+	            unset($this->tags[$i]);
+            }
         }
+
+	    if(empty($this->namespace)){
+		    $this->namespace = trim(StringHelper::dirname($this->name), '\\');
+	    }
 
         foreach ($reflector->getProperties() as $propertyReflector) {
             if ($propertyReflector->getVisibility() != 'private') {
